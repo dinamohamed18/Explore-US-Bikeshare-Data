@@ -22,21 +22,21 @@ def get_filters():
     # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     while True :
         chosen_city = input("\nChoose a city [chicago, new york city, washington] : \n")
-        if chosen_city in cities :
+        if chosen_city.lower() in cities :
             break;
     # TO DO: get user input for month (all, january, february, ... , june)
     while True :
         chosen_month = input("\nChoose a month [all, january, february, march, april, may, june] : \n")
-        if chosen_month in months :
+        if chosen_month.lower() in months :
             break;
     # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
     while True :
         chosen_day = input("\nChoose a month [all, sunday, monday, tuesday, wednesday, thursday, friday, saturday] : \n")
-        if chosen_day in days :
+        if chosen_day.lower() in days :
             break;
 
     print('-'*40)
-    return chosen_city, chosen_month, chosen_day
+    return chosen_city.lower(), chosen_month.lower(), chosen_day.lower()
 
 
 def load_data(city, month, day):
@@ -163,12 +163,20 @@ def user_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
+def display_data(df):
+    start_loc = 0
+    view_data = input("\nWould you like to view 5 rows of individual trip data? (yes/no) .").lower()
+    while view_data == 'yes' and len(df) >= start_loc+5 :
+        print(df.iloc[start_loc:start_loc+5])
+        start_loc += 5
+        view_data = input("\nDo you want to continue? (yes/no) .").lower()
 
 def main():
     while True:
         city, month, day = get_filters()
         df = load_data(city, month, day)
 
+        display_data(df)
         time_stats(df)
         station_stats(df)
         trip_duration_stats(df)
